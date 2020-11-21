@@ -5,6 +5,9 @@
 - Valeria Pineda González, A01023979
 - Eduardo Villalpando, A01023646
 
+## Estructura de la base de datos
+![](database.jpeg)
+
 ## Reto
 El reto de IoT se desarrolla en cuatro etapas: 
 

@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.22, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.21, for macos10.15 (x86_64)
 --
--- Host: localhost    Database: TC1004B_Actividad
+-- Host: localhost    Database: reto_iot
 -- ------------------------------------------------------
--- Server version	8.0.22-0ubuntu0.20.04.2
+-- Server version	8.0.21
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,6 +14,30 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Current Database: `reto_iot`
+--
+
+/*!40000 DROP DATABASE IF EXISTS `reto_iot`*/;
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `reto_iot` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+USE `reto_iot`;
+
+--
+-- Temporary view structure for view `heart_rate`
+--
+
+DROP TABLE IF EXISTS `heart_rate`;
+/*!50001 DROP VIEW IF EXISTS `heart_rate`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `heart_rate` AS SELECT 
+ 1 AS `Nombre`,
+ 1 AS `Ritmo cardiaco`,
+ 1 AS `Fecha`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `Levels`
@@ -43,6 +67,20 @@ INSERT INTO `Levels` VALUES (1,98,97,'2021-03-23 00:00:00'),(2,94,99,'2021-10-10
 UNLOCK TABLES;
 
 --
+-- Temporary view structure for view `oxygen_saturation`
+--
+
+DROP TABLE IF EXISTS `oxygen_saturation`;
+/*!50001 DROP VIEW IF EXISTS `oxygen_saturation`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `oxygen_saturation` AS SELECT 
+ 1 AS `Nombre`,
+ 1 AS `% Oxígeno`,
+ 1 AS `Fecha`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `Users`
 --
 
@@ -70,34 +108,6 @@ INSERT INTO `Users` VALUES (1,'Phineas Flynn','Ferb ya se que vamos a hacer hoy'
 UNLOCK TABLES;
 
 --
--- Temporary view structure for view `heart_rate`
---
-
-DROP TABLE IF EXISTS `heart_rate`;
-/*!50001 DROP VIEW IF EXISTS `heart_rate`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `heart_rate` AS SELECT 
- 1 AS `name`,
- 1 AS `heartRate`,
- 1 AS `date`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `oxygen_saturation`
---
-
-DROP TABLE IF EXISTS `oxygen_saturation`;
-/*!50001 DROP VIEW IF EXISTS `oxygen_saturation`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `oxygen_saturation` AS SELECT 
- 1 AS `name`,
- 1 AS `oxygenSaturation`,
- 1 AS `date`*/;
-SET character_set_client = @saved_cs_client;
-
---
 -- Temporary view structure for view `users_avg`
 --
 
@@ -106,9 +116,9 @@ DROP TABLE IF EXISTS `users_avg`;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `users_avg` AS SELECT 
- 1 AS `name`,
- 1 AS `Avg_Heart_Rate`,
- 1 AS `Avg_Oxygen_Saturation`*/;
+ 1 AS `Nombre`,
+ 1 AS `% Oxígeno promedio`,
+ 1 AS `Ritmo cardiaco promedio`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -120,11 +130,17 @@ DROP TABLE IF EXISTS `users_levels`;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `users_levels` AS SELECT 
- 1 AS `name`,
- 1 AS `oxygenSaturation`,
- 1 AS `heartRate`,
- 1 AS `date`*/;
+ 1 AS `Nombre`,
+ 1 AS `% Oxígeno`,
+ 1 AS `Ritmo cardiaco`,
+ 1 AS `Fecha`*/;
 SET character_set_client = @saved_cs_client;
+
+--
+-- Current Database: `reto_iot`
+--
+
+USE `reto_iot`;
 
 --
 -- Final view structure for view `heart_rate`
@@ -139,7 +155,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `heart_rate` AS select `Users`.`name` AS `name`,`Levels`.`heartRate` AS `heartRate`,`Levels`.`date` AS `date` from (`Users` join `Levels` on((`Users`.`userID` = `Levels`.`userID`))) */;
+/*!50001 VIEW `heart_rate` AS select `users`.`name` AS `Nombre`,`levels`.`heartRate` AS `Ritmo cardiaco`,`levels`.`date` AS `Fecha` from (`users` join `levels`) where (`levels`.`userID` = `users`.`userID`) order by `levels`.`date` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -157,7 +173,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `oxygen_saturation` AS select `Users`.`name` AS `name`,`Levels`.`oxygenSaturation` AS `oxygenSaturation`,`Levels`.`date` AS `date` from (`Users` join `Levels` on((`Users`.`userID` = `Levels`.`userID`))) */;
+/*!50001 VIEW `oxygen_saturation` AS select `users`.`name` AS `Nombre`,`levels`.`oxygenSaturation` AS `% Oxígeno`,`levels`.`date` AS `Fecha` from (`users` join `levels`) where (`levels`.`userID` = `users`.`userID`) order by `levels`.`date` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -175,7 +191,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `users_avg` AS select `Users`.`name` AS `name`,`heartRate_avg`(`Users`.`userID`) AS `Avg_Heart_Rate`,`oxygenSaturation_avg`(`Users`.`userID`) AS `Avg_Oxygen_Saturation` from `Users` */;
+/*!50001 VIEW `users_avg` AS select `users`.`name` AS `Nombre`,cast(avg(`levels`.`oxygenSaturation`) as decimal(10,2)) AS `% Oxígeno promedio`,cast(avg(`levels`.`heartRate`) as decimal(10,2)) AS `Ritmo cardiaco promedio` from (`users` join `levels` on((`users`.`userID` = `levels`.`userID`))) group by `users`.`name` order by `users`.`name` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -193,7 +209,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `users_levels` AS select `Users`.`name` AS `name`,`Levels`.`oxygenSaturation` AS `oxygenSaturation`,`Levels`.`heartRate` AS `heartRate`,`Levels`.`date` AS `date` from (`Users` join `Levels` on((`Users`.`userID` = `Levels`.`userID`))) */;
+/*!50001 VIEW `users_levels` AS select `users`.`name` AS `Nombre`,`levels`.`oxygenSaturation` AS `% Oxígeno`,`levels`.`heartRate` AS `Ritmo cardiaco`,`levels`.`date` AS `Fecha` from (`users` join `levels`) where (`levels`.`userID` = `users`.`userID`) order by `levels`.`date` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -207,4 +223,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-20 23:05:39
+-- Dump completed on 2020-11-30 21:55:16

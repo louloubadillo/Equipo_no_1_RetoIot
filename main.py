@@ -24,9 +24,9 @@ def insertarNiveles(userID):
 try:
 	cnx = mysql.connector.connect(
 		user = "root", 
-		password = 'DEV.Lalongo1606', 
-		host = "localhost", 
-		database = 'TC1004B_Actividad',
+		password = 'mac_15_db', 
+		port = "3306", 
+		database = 'reto_iot',
 	)
 
 	cursor = cnx.cursor()
@@ -49,6 +49,7 @@ try:
 	cursor.execute(query)
 
 	users = []
+	random.seed(0)
 
 	print("USUARIOS: ")
 	for result in cursor:
@@ -76,5 +77,5 @@ except mysql.connector.Error as err:
 	else:
 		print(err)
 	
-# finally:
-# 	cnx.close()
+finally:
+	cnx.close()

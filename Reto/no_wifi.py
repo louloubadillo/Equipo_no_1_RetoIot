@@ -332,7 +332,7 @@ def insert_into_database(heartRate, oxygenSaturation, userID):
     args = (userID, heartRate, oxygenSaturation, today)
     cursor.execute(query,args)
     cnx.commit()
-    os.system("sh Reto/db_update.sh")   # shell scripts (っ˘ω˘ς )
+    os.system("sh db_update.sh")   # shell scripts (っ˘ω˘ς )
 # - - -
 
 try:
@@ -346,6 +346,8 @@ try:
     cursor = cnx.cursor(buffered=True)
 
     userID = login()
+    print("Por favor coloca tus dedos en el Heartxigen")
+    time.sleep(6)
 
     ser=serial.Serial("/dev/cu.usbserial-1410", 9600);
     hrValues=[]
@@ -383,7 +385,7 @@ try:
 
             # check if HR value is valid
             # SPO2 value is always wrong b/c of sensor so ¯\_(ツ)_/¯
-            if hr_and_spo2[1] or hr_and_spo2[3]:
+            if hr_and_spo2[1] and hr_and_spo2[3]:
                 insert_into_database(HR2, hr_and_spo2[2], userID)
                 ser.write(b'H')
                 time.sleep(10)
